@@ -1,0 +1,20 @@
+name: Build GStreamer in Docker
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: docker build -t gstreamer-image .
+
+      - name: Run container
+        run: docker run --rm gstreamer-image
