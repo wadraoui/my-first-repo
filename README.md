@@ -5,6 +5,6 @@ Este es mi repositorio en GitHub.
 gstreamer.sh
 
 
-#Objetivo
+# Objetivo
 
 Explorar GitHub, ver sus propios comandos de como se utilizan y para que sirven.
