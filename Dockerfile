@@ -1,33 +1,24 @@
-FROM ubuntu:22.04
-
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Instalar dependencias básicas
+# Instalamos dependencias y herramientas
 RUN apt-get update && apt-get install -y \
-    build-essential \
     python3 \
     python3-pip \
     ninja-build \
-    git \
-    pkg-config \
-    libglib2.0-dev \
-    liborc-0.4-dev \
+    build-essential \
     flex \
     bison \
-    gettext \
-    autopoint \
-    && rm -rf /var/lib/apt/lists/*
+    git \
+    libglib2.0-dev \
+    && pip3 install meson
 
-# Instalar Meson actualizado con pip
-RUN pip3 install --upgrade meson
-
+# Configuramos el directorio de trabajo
 WORKDIR /gstreamer
 
-# Clonar GStreamer
-RUN git clone https://gitlab.freedesktop.org/gstreamer/gstreamer.git .
+# Clonamos (si no lo has copiado ya)
+RUN git clone https://gitlab.freedesktop.org/gstreamer/gstreamer.git . --depth 1
 
-# Crear build directory y compilar
-RUN /usr/local/bin/meson setup builddir \
-    && /usr/local/bin/ninja -C builddir
-
-CMD ["bash"]
+# --- AQUÍ ESTÁ EL CAMBIO ---
+# Usamos 'meson' directamente sin la ruta absoluta /usr/local/bin/
+RUN meson setup builddir \
+    -Dauto_features=disabled \
+    -Dbase=enabled \
+    && ninja -C builddir
