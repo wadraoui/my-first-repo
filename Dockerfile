@@ -1,3 +1,6 @@
+FROM ubuntu:22.04
+
+
 # Instalamos dependencias y herramientas
 RUN apt-get update && apt-get install -y \
     python3 \
